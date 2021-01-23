@@ -64,6 +64,12 @@ class Calculator
                 if (! is_numeric($value)) {
                     throw new InvalidValueException(sprintf('The value %s is invalid.', $value));
                 }
+
+                if ($length === null && $this->isOperator($value)) {
+                    $queue->push($value);
+                    break;
+                }
+
                 $params[] = $value;
                 --$length;
                 if ($length <= 0) {

@@ -15,7 +15,7 @@ interface OperatorInterface
 {
     public function getOperator(): string;
 
-    public function length(): int;
+    public function length(): ?int;
 
     public function execute(array $paramaters, int $scale): string;
 }

@@ -13,7 +13,7 @@ namespace Hyperf\Rpn\Operator;
 
 abstract class Operator implements OperatorInterface
 {
-    public function length(): int
+    public function length(): ?int
     {
         return 2;
     }
