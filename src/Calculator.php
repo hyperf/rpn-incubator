@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace Hyperf\Rpn;
 
+use Hyperf\Rpn\Exception\InvalidExpressionException;
 use Hyperf\Rpn\Exception\InvalidOperatorException;
 use Hyperf\Rpn\Exception\InvalidValueException;
 use Hyperf\Rpn\Exception\NotFoundException;
@@ -79,6 +80,10 @@ class Calculator
             }
 
             $queue->push($operator->execute(array_reverse($params), $scale));
+        }
+
+        if ($queue->count() !== 1) {
+            throw new InvalidExpressionException(sprintf('The expression %s is invalid.', $expression));
         }
 
         return $queue->pop();

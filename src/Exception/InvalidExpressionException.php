@@ -11,6 +11,6 @@ declare(strict_types=1);
  */
 namespace Hyperf\Rpn\Exception;
 
-class NotFoundException extends \Exception
+class InvalidExpressionException extends \InvalidArgumentException
 {
 }

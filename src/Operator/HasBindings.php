@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 namespace Hyperf\Rpn\Operator;
 
-use Hyperf\Rpn\Exception\NotFoundException;
+use Hyperf\Rpn\Exception\InvalidValueException;
 
 trait HasBindings
 {
@@ -23,7 +23,7 @@ trait HasBindings
                 $index = $this->getBindingIndex($paramater);
                 $value = $bindings[$index] ?? null;
                 if ($value === null) {
-                    throw new NotFoundException(sprintf('The index %d is not found.', $index));
+                    throw new InvalidValueException(sprintf('The value of index %d is not found.', $index));
                 }
 
                 $result[] = (string) $value;
