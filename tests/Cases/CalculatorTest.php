@@ -20,11 +20,17 @@ use Hyperf\Rpn\Exception\InvalidOperatorException;
  */
 class CalculatorTest extends AbstractTestCase
 {
-    public function testToRPNExpression()
+    // public function testToRPNExpression()
+    // {
+    //     $calculator = new Calculator();
+    //     $expression = $calculator->toRPNExpression('1 + 1');
+    // }
+
+    public function testCalculateAdd()
     {
         $calculator = new Calculator();
-        $expression = $calculator->toRPNExpression('1 + 1');
-        var_dump($expression);
+        $result = $calculator->calculate('1 1 +');
+        $this->assertSame('2', $result);
     }
 
     public function testInvalidOperator()

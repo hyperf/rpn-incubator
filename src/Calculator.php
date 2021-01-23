@@ -12,23 +12,28 @@ declare(strict_types=1);
 namespace Hyperf\Rpn;
 
 use Hyperf\Rpn\Exception\InvalidOperatorException;
+use Hyperf\Rpn\Exception\InvalidValueException;
+use Hyperf\Rpn\Exception\NotFoundException;
 use Hyperf\Rpn\Operator\AddOperator;
 use Hyperf\Rpn\Operator\DivideOperator;
+use Hyperf\Rpn\Operator\HasBindings;
 use Hyperf\Rpn\Operator\MultiplyOperator;
 use Hyperf\Rpn\Operator\OperatorInterface;
 use Hyperf\Rpn\Operator\SubtractOperator;
 
 class Calculator
 {
-    /**
-     * @var string
-     */
-    protected $leftTag = '[';
+    use HasBindings;
 
     /**
      * @var string
      */
-    protected $rightTag = ']';
+    protected $leftTag = '(';
+
+    /**
+     * @var string
+     */
+    protected $rightTag = ')';
 
     protected $operators = [
     ];
@@ -47,13 +52,62 @@ class Calculator
         }
     }
 
-    public function calculate(string $expression, array $bindings = []): string
+    public function calculate(string $expression, array $bindings = [], int $scale = 0): string
     {
+        $queue = new \SplQueue();
+        $tags = $this->fromBindings(explode(' ', $expression), $bindings);
+        foreach ($tags as $tag) {
+            if (! $this->isOperator($tag)) {
+                $queue->push($tag);
+                continue;
+            }
+
+            $operator = $this->getOperator($tag);
+
+            $params = [];
+            $length = $operator->length();
+            while (true) {
+                $value = $queue->pop();
+                if (! is_numeric($value)) {
+                    throw new InvalidValueException(sprintf('The value %s is invalid.', $value));
+                }
+                $params[] = $value;
+                --$length;
+                if ($length <= 0) {
+                    break;
+                }
+            }
+
+            $queue->push($operator->execute($params, $scale));
+        }
+
+        return $queue->pop();
     }
 
-    public function toRPNExpression(string $expression): array
+    public function toRPNExpression(string $expression): string
     {
-        return explode(' ', $expression);
+        $tags = explode(' ', $expression);
+        foreach ($tags as $tag) {
+            if ($this->isOperator($tag)) {
+            }
+        }
+
+        return '';
+    }
+
+    protected function getOperator(string $tag): OperatorInterface
+    {
+        $operator = $this->operators[$tag] ?? null;
+        if (! $operator instanceof OperatorInterface) {
+            throw new NotFoundException(sprintf('Operator %s is not found.', $tag));
+        }
+
+        return $operator;
+    }
+
+    protected function isOperator(string $tag): bool
+    {
+        return array_key_exists($tag, $this->operators);
     }
 
     protected function getDefaultOperators(): array

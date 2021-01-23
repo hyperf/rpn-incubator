@@ -9,17 +9,16 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-namespace Hyperf\Rpn\Operator;
+namespace HyperfTest\Stub;
 
-class DivideOperator extends Operator
+use Hyperf\Rpn\Operator\HasBindings;
+
+class HasBindingsStub
 {
-    public function getOperator(): string
-    {
-        return '/';
-    }
+    use HasBindings;
 
-    public function execute(array $paramaters, int $scale): string
+    public function getValue($string)
     {
-        // TODO: Implement execute() method.
+        return $this->getBindingIndex($string);
     }
 }

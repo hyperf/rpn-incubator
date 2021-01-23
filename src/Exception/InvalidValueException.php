@@ -9,13 +9,8 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-namespace Hyperf\Rpn\Operator;
+namespace Hyperf\Rpn\Exception;
 
-interface OperatorInterface
+class InvalidValueException extends \InvalidArgumentException
 {
-    public function getOperator(): string;
-
-    public function length(): int;
-
-    public function execute(array $paramaters, int $scale): string;
 }

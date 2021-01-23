@@ -18,7 +18,7 @@ class SubtractOperator extends Operator
         return '-';
     }
 
-    public function execute(array $paramaters, array $bindings): string
+    public function execute(array $paramaters, int $scale): string
     {
         // TODO: Implement execute() method.
     }

@@ -18,7 +18,9 @@ class AddOperator extends Operator
         return '+';
     }
 
-    public function execute(array $paramaters, array $bindings): string
+    public function execute(array $paramaters, int $scale): string
     {
+        $paramaters[] = $scale;
+        return bcadd(...$paramaters);
     }
 }
