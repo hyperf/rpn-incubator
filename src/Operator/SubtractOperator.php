@@ -20,6 +20,7 @@ class SubtractOperator extends Operator
 
     public function execute(array $paramaters, int $scale): string
     {
-        // TODO: Implement execute() method.
+        $paramaters[] = $scale;
+        return bcsub(...$paramaters);
     }
 }
