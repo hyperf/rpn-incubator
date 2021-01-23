@@ -26,11 +26,40 @@ class CalculatorTest extends AbstractTestCase
     //     $expression = $calculator->toRPNExpression('1 + 1');
     // }
 
-    public function testCalculateAdd()
+    public function testCalculateBasic()
     {
         $calculator = new Calculator();
         $result = $calculator->calculate('1 1 +');
         $this->assertSame('2', $result);
+
+        $result = $calculator->calculate('10 1 -', [], 2);
+        $this->assertSame('9.00', $result);
+
+        $result = $calculator->calculate('10 1.5 *', [], 2);
+        $this->assertSame('15.00', $result);
+
+        $result = $calculator->calculate('10 3 /', [], 3);
+        $this->assertSame('3.333', $result);
+    }
+
+    public function testCalculateComplex()
+    {
+        $calculator = new Calculator();
+        $result = $calculator->calculate('1 1 + 5 *');
+        $this->assertSame('10', $result);
+
+        $result = $calculator->calculate('10 1 - 3 /', [], 2);
+        $this->assertSame('3.00', $result);
+
+        $result = $calculator->calculate('5 1 2 + 4 * + 3 -', []);
+        $this->assertSame('14', $result);
+    }
+
+    public function testCalculateBindings()
+    {
+        $calculator = new Calculator();
+        $result = $calculator->calculate('[0] 1 2 + 4 * + [1] -', [5, 10]);
+        $this->assertSame('7', $result);
     }
 
     public function testInvalidOperator()

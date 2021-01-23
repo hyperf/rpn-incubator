@@ -78,7 +78,7 @@ class Calculator
                 }
             }
 
-            $queue->push($operator->execute($params, $scale));
+            $queue->push($operator->execute(array_reverse($params), $scale));
         }
 
         return $queue->pop();
