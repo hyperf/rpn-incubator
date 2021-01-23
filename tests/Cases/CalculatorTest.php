@@ -35,7 +35,6 @@ class CalculatorTest extends AbstractTestCase
         $result = $calculator->calculate('10 1 -', [], 2);
         $this->assertSame('9.00', $result);
 
-        var_dump(bcmul('1', '10', 2));
         $result = $calculator->calculate('10 1.5 *', [], 2);
         $this->assertSame('15.00', $result);
 
