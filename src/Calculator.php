@@ -27,17 +27,9 @@ class Calculator
     use HasBindings;
 
     /**
-     * @var string
+     * @var OperatorInterface[]
      */
-    protected $leftTag = '(';
-
-    /**
-     * @var string
-     */
-    protected $rightTag = ')';
-
-    protected $operators = [
-    ];
+    protected $operators = [];
 
     /**
      * @param OperatorInterface[] $operators

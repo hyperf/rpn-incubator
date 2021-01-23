@@ -60,6 +60,9 @@ class CalculatorTest extends AbstractTestCase
         $calculator = new Calculator();
         $result = $calculator->calculate('[0] 1 2 + 4 * + [1] -', [5, 10]);
         $this->assertSame('7', $result);
+
+        $result = $calculator->calculate('[0] 1 2 + 4 * + [1] -', [5, 10], 1);
+        $this->assertSame('7.0', $result);
     }
 
     public function testInvalidOperator()
