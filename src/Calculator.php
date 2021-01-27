@@ -18,10 +18,8 @@ use Hyperf\Rpn\Exception\NotFoundException;
 use Hyperf\Rpn\Operator\AddOperator;
 use Hyperf\Rpn\Operator\DivideOperator;
 use Hyperf\Rpn\Operator\HasBindings;
-use Hyperf\Rpn\Operator\LeftBracketOperator;
 use Hyperf\Rpn\Operator\MultiplyOperator;
 use Hyperf\Rpn\Operator\OperatorInterface;
-use Hyperf\Rpn\Operator\RightBracketOperator;
 use Hyperf\Rpn\Operator\SubtractOperator;
 
 class Calculator
@@ -152,8 +150,6 @@ class Calculator
             new SubtractOperator(),
             new MultiplyOperator(),
             new DivideOperator(),
-            new LeftBracketOperator(),
-            new RightBracketOperator(),
         ];
     }
 }
