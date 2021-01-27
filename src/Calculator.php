@@ -18,10 +18,8 @@ use Hyperf\Rpn\Exception\NotFoundException;
 use Hyperf\Rpn\Operator\AddOperator;
 use Hyperf\Rpn\Operator\DivideOperator;
 use Hyperf\Rpn\Operator\HasBindings;
-use Hyperf\Rpn\Operator\LeftBracketOperator;
 use Hyperf\Rpn\Operator\MultiplyOperator;
 use Hyperf\Rpn\Operator\OperatorInterface;
-use Hyperf\Rpn\Operator\RightBracketOperator;
 use Hyperf\Rpn\Operator\SubtractOperator;
 
 class Calculator
@@ -93,29 +91,26 @@ class Calculator
                 $numStack->push($match);
                 continue;
             }
-            $operator = $this->getOperator($match);
-            if ($operator instanceof LeftBracketOperator) {
+            if ($match === '(') {
                 $operaStack->push($match);
                 continue;
             }
-            if ($operator instanceof RightBracketOperator) {
-                $_operator = $this->getOperator($operaStack->pop());
-                while (!$_operator instanceof LeftBracketOperator) {
-                    $numStack->push($_operator->getOperator());
-                    $_operator = $this->getOperator($operaStack->pop());
+            if ($match === ')') {
+                $_tag = $operaStack->pop();
+                while ($_tag !== '(') {
+                    $numStack->push($_tag);
+                    $_tag = $operaStack->pop();
                 }
                 continue;
             }
-            if ($operaStack->isEmpty()) {
-                $operaStack->push($operator->getOperator());
-                continue;
+            if (!$operaStack->isEmpty()) {
+                $top = $operaStack->top();
+                if (in_array($top, ['/', '*'])) {
+                    $operaStack->pop();
+                    $numStack->push($top);
+                }
             }
-            $top = $this->getOperator($operaStack->top());
-            if ($top instanceof MultiplyOperator || $top instanceof DivideOperator) {
-                $operaStack->pop();
-                $numStack->push($top->getOperator());
-            }
-            $operaStack->push($operator->getOperator());
+            $operaStack->push($match);
         }
         while (!$operaStack->isEmpty()) {
             $numStack->push($operaStack->pop());
@@ -149,8 +144,6 @@ class Calculator
             new SubtractOperator(),
             new MultiplyOperator(),
             new DivideOperator(),
-            new LeftBracketOperator(),
-            new RightBracketOperator(),
         ];
     }
 }
