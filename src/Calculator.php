@@ -115,7 +115,7 @@ class Calculator
                 continue;
             }
             if (in_array($match, ['-', '+'])) {
-                while (!$operaStack->isEmpty() && in_array($operaStack->top(), ['+', '-', '*', '/'])) {
+                while (! $operaStack->isEmpty() && in_array($operaStack->top(), ['+', '-', '*', '/'])) {
                     $numStack->push($operaStack->pop());
                 }
             }

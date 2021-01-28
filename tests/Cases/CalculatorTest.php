@@ -87,7 +87,13 @@ class CalculatorTest extends AbstractTestCase
         $got = $calculator->toRPNExpression('4 * (-2)');
         $this->assertSame('4 -2 *', $got);
 
-        $got = $calculator->toRPNExpression('4 - -2 * ( 5 + 5 ) -10');
+        $got = $calculator->toRPNExpression('4 * -2');
+        $this->assertSame('4 -2 *', $got);
+
+        $got = $calculator->toRPNExpression('4--2*(5+5)-10');
         $this->assertSame('4 -2 5 5 + * - 10 -', $got);
+
+        $got = $calculator->toRPNExpression('12 -- 10 * 4.4 + 1');
+        $this->assertSame('12 -10 4.4 * - 1 +', $got);
     }
 }
