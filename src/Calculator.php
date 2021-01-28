@@ -89,13 +89,46 @@ class Calculator
 
     public function toRPNExpression(string $expression): string
     {
-        $tags = explode(' ', $expression);
-        foreach ($tags as $tag) {
-            if ($this->isOperator($tag)) {
+        $numStack = new \SplStack();
+        $operaStack = new \SplStack();
+        preg_match_all('/((?:[0-9\.]+)|(?:[\(\)\+\-\*\/])){1}/', $expression, $matchs);
+        foreach ($matchs[0] as $key => &$match) {
+            if (is_numeric($match)) {
+                $numStack->push($match);
+                continue;
             }
+            if ($match === '(') {
+                $operaStack->push($match);
+                continue;
+            }
+            if ($match === ')') {
+                $_tag = $operaStack->pop();
+                while ($_tag !== '(') {
+                    $numStack->push($_tag);
+                    $_tag = $operaStack->pop();
+                }
+                continue;
+            }
+            if ($match === '-' && ($key === 0 || in_array($matchs[0][$key - 1], ['+', '-', '*', '/', '(']))) {
+                $numStack->push($match . ($matchs[0][$key + 1]));
+                unset($matchs[0][$key + 1]);
+                continue;
+            }
+            if (in_array($match, ['-', '+'])) {
+                while (! $operaStack->isEmpty() && in_array($operaStack->top(), ['+', '-', '*', '/'])) {
+                    $numStack->push($operaStack->pop());
+                }
+            }
+            $operaStack->push($match);
         }
-
-        return '';
+        while (! $operaStack->isEmpty()) {
+            $numStack->push($operaStack->pop());
+        }
+        $rpnExp = '';
+        while (! $numStack->isEmpty()) {
+            $rpnExp .= ($numStack->shift() . ' ');
+        }
+        return trim($rpnExp);
     }
 
     protected function getOperator(string $tag): OperatorInterface
