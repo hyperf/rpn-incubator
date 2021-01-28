@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace Hyperf\Rpn;
 
+use ArrayObject;
 use Hyperf\Rpn\Exception\InvalidExpressionException;
 use Hyperf\Rpn\Exception\InvalidOperatorException;
 use Hyperf\Rpn\Exception\InvalidValueException;
@@ -92,7 +93,7 @@ class Calculator
         $numStack = new \SplStack();
         $operaStack = new \SplStack();
         preg_match_all('/((?:[0-9\.]+)|(?:[\(\)\+\-\*\/])){1}/', $expression, $matchs);
-        foreach ($matchs[0] as $match) {
+        foreach ($matchs[0] as $key=> &$match) {            
             if (is_numeric($match)) {
                 $numStack->push($match);
                 continue;
@@ -107,6 +108,11 @@ class Calculator
                     $numStack->push($_tag);
                     $_tag = $operaStack->pop();
                 }
+                continue;
+            }
+            if ($match === '-' && ($key === 0 || in_array($matchs[0][$key - 1], ['+', '-', '*', '/', '(']))) {
+                $numStack->push($match . ($matchs[0][$key + 1]));
+                unset($matchs[0][$key + 1]);
                 continue;
             }
             if (!$operaStack->isEmpty()) {
