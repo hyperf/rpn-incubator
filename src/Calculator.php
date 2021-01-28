@@ -92,7 +92,7 @@ class Calculator
         $numStack = new \SplStack();
         $operaStack = new \SplStack();
         preg_match_all('/((?:[0-9\.]+)|(?:[\(\)\+\-\*\/])){1}/', $expression, $matchs);
-        foreach ($matchs[0] as $key => &$match) {
+        foreach ($matchs[0] as $key => $match) {
             if (is_numeric($match)) {
                 $numStack->push($match);
                 continue;
