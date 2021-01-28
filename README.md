@@ -81,3 +81,15 @@ use Hyperf\Rpn\Calculator;
 $calculator = new Calculator();
 $calculator->calculate('[0] 1 2 + 4 * + [1] -', [5, 10]); // '7'
 ```
+
+### 中缀表达式转化为后缀表达式
+
+> 暂时不支持使用变量 
+
+```php
+<?php
+use Hyperf\Rpn\Calculator;
+
+$calculator = new Calculator();
+$calculator->toRPNExpression('4 - 2 * ( 5 + 5 ) - 10'); // 4 2 5 5 + * - 10 -
+```
