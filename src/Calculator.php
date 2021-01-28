@@ -110,7 +110,6 @@ class Calculator
                 continue;
             }
             if ($match === '-' && ($key === 0 || in_array($matchs[0][$key - 1], ['+', '-', '*', '/', '(']))) {
-                echo $match . ($matchs[0][$key + 1]);
                 $numStack->push($match . ($matchs[0][$key + 1]));
                 unset($matchs[0][$key + 1]);
                 continue;
