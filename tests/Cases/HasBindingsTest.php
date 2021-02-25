@@ -9,9 +9,9 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-namespace HyperfTest\Cases;
+namespace HyperfTest\Rpn\Cases;
 
-use HyperfTest\Stub\HasBindingsStub;
+use HyperfTest\Rpn\Stub\HasBindingsStub;
 
 /**
  * @internal

@@ -9,7 +9,7 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-namespace HyperfTest\Cases;
+namespace HyperfTest\Rpn\Cases;
 
 use Hyperf\Rpn\Calculator;
 use Hyperf\Rpn\Exception\InvalidOperatorException;
@@ -64,7 +64,7 @@ class CalculatorTest extends AbstractTestCase
 
     public function testInvalidOperator()
     {
-        $this->expectExceptionMessage(InvalidOperatorException::class);
+        $this->expectException(InvalidOperatorException::class);
 
         new Calculator([new \StdClass()]);
     }
